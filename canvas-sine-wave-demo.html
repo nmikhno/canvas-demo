@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<style>
+		canvas{
+			width: 800px;
+			height: 300px;
+			border: 1px solid black;
+		}
+
+	</style>
+
+	<canvas id="canvas" ></canvas>
+
+	<script>
+
+	var unit = 50,
+    canvas, context, height, width, xAxis, yAxis;
+
+    canvas = document.getElementById("canvas");
+
+    canvas.width = 800;
+    canvas.height = 300;
+
+    context = canvas.getContext("2d");
+    context.lineJoin = 'round';
+
+    height = canvas.height;
+    width = canvas.width;
+
+    xAxis = Math.floor(height/2);
+    yAxis = 0;
+
+
+    drawAxes();
+    context.stroke();
+
+    // sine color
+    context.strokeStyle = '#f00';
+
+    // separate sine wave from axis
+    context.beginPath();
+    drawSine(0);
+    
+    context.stroke();
+
+    // show axis names
+    context.strokeStyle = '#000';
+    context.strokeText('y', 10 , 10);
+    context.strokeText('x', width - 10, xAxis + 10);
+
+    // show function definition
+    context.strokeStyle = '#00f';
+    context.font = '50pt Calibri';
+    context.lineWidth = 3;        
+    context.strokeText('y = sin(x)', width / 3, (height / 2) + 100);
+
+	function drawSine(period) {
+	    context.strokeStyle = '#f00';
+	    var x = period;
+	    var y = Math.sin(x);
+	    context.moveTo(yAxis, unit*y+xAxis);
+
+        for (i = yAxis; i <= width; i += 10) {
+
+            x = period + ( -yAxis + i) / unit;
+            y = Math.sin(x);
+
+            context.lineTo(i, unit * y + xAxis);
+	    }
+	}
+
+    function drawAxes() {
+
+    // Draw X and Y axes
+    context.moveTo(yAxis, xAxis);
+    context.lineTo(width, xAxis);
+
+    for(var x = 0; x < width; x += unit ){
+        if(x%unit == 0){
+            context.strokeRect(yAxis + x, 150, 1, 10)
+        }
+    }
+
+    context.moveTo(yAxis, 0);
+    context.lineTo(yAxis, height);
+
+    for(var y = 0; y <= height;  y += unit ){
+        if(y%unit == 0){
+            context.strokeRect(0, y, 10, 1);
+        }
+    }
+
+}
+
+
+	</script>
+</body>
+</html>
